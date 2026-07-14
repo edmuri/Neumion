@@ -1,12 +1,14 @@
-# Neumion
+<div align="center">
+    <img src="./.public/logo.svg">
+</div>
 
 <!-- <div align="center">
 
 ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 
-</div>
+</div>-->
 
---- -->
+--- 
 
 Ever wondered what your favorite songs have in common? Neumion dives beneath the surface of your music to analyze the theory behind it, from tempo and key to chord progressions and other musical characteristics. Whether you're analyzing a single song, a playlist, or an entire album, Neumion reveals the patterns that define your taste and helps you discover music you'll love.
 
