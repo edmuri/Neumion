@@ -1,16 +1,21 @@
 import librosa
-from pathlib import Path
 import numpy as np
 import os
 
 import lib.output as out
 from lib.song import Song
-import lib.ArgumentParser as ap
+import lib.argumentParser as ap
+import lib.audioFetcher as af
 
 class Neumion:
     def __init__(self, args):
         self.args = args
-        self.construct_paths()
+
+    def handle_args(self):
+        if self.args.spotify_link:
+            af.get_spotify_song(self.args.spotify_link)
+        elif self.args.youtube_link:
+            af.get_youtube_song(self.args.youtube_link)
 
     def construct_paths(self):
         base = "Music/"
@@ -19,12 +24,11 @@ class Neumion:
         match(bool(self.args.folder), bool(self.args.song)):
             case(False, False):
                 # No Folder, No Song
-                print("Nothing to analyze, returning..")
+                raise Exception("Nothing to analyze, returning..")
                 pass
 
             case(False, True):
                 # No Folder, Yes Song
-
                 self.songs+= [Song(self.args.song)]
                 pass
 
@@ -50,14 +54,19 @@ class Neumion:
         for song in self.songs:
             print(song)
 
+
 def main():
     out.start()
     parser = ap.ArgParser()
     args = parser.parse_args()
 
     neumion_app = Neumion(args)
-    neumion_app.analyze()
-    neumion_app.print()
+    neumion_app.handle_args()
+    # neumion_app.analyze()
+    # neumion_app.print()
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        out.error(e)

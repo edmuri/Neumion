@@ -3,9 +3,11 @@ import re
 from pathlib import Path
 
 class Song:
+
     def __init__(self, path):
         self.path = path
         self.title = re.sub(r'_+', ' ', Path(path).stem)
+
 
     def update_stats(self, tempo=None):
         self.tempo = tempo[0]

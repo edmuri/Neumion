@@ -6,3 +6,7 @@ def start():
                             " "*10,
                             "Beginning Neumion"))
     print("*"*39)
+
+def error(e):
+    print("Error Caught: " + str(e))
+    print("Exiting Neumion...")
