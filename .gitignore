@@ -1,6 +1,7 @@
-Music/*
-!Music/README.md
+music/*
+!music/README.md
 temp.py
 __pycache__/
 env/neumion
 env/.venv
+temp

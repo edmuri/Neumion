@@ -13,12 +13,20 @@ class Neumion:
 
     def handle_args(self):
         if self.args.spotify_link:
-            af.get_spotify_song(self.args.spotify_link, self.args.keep)
+            self.song = af.get_spotify_song(
+                                self.args.spotify_link, 
+                                self.args.keep)
+            
         elif self.args.youtube_link:
-            af.get_youtube_song(self.args.youtube_link, self.args.keep)
+            self.song = af.get_youtube_song(
+                                self.args.youtube_link, 
+                                self.args.keep)
+            
+        else:
+            self._construct_paths()
 
-    def construct_paths(self):
-        base = "Music/"
+    def _construct_paths(self):
+        base = "music/"
         self.songs = []
 
         match(bool(self.args.folder), bool(self.args.song)):

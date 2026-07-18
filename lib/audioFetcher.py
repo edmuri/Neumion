@@ -1,40 +1,64 @@
 from spotdl import Spotdl
 import yt_dlp
+from song import Song
 
-def get_spotify_song(url):
+def _construct_path(keep):
+    if keep:
+        return "./music/"
+    else:
+        return "./temp/"
+
+def get_spotify_song(url, keep):
+
+    dir = _construct_path(keep)
 
     spotdl_client = Spotdl(
         client_id="",
         client_secret="",
         downloader_settings={
-            "output":"./Music/{album}/{title}.{output-ext}",
+            "output":"{0}{{title}}.{{output-ext}}".format(dir+"{album}/"),
             "format":"mp3",
         }
     )
 
     songs = spotdl_client.search([url])
     downloaded_files = spotdl_client.download_songs(songs)
-    print(downloaded_files)
-    for song in downloaded_files:
-        print(song.Song)
-    return downloaded_files
 
-def get_youtube_song(url):
-    print("TBI")
-    return
+    songs_list = []
+    for song, path in downloaded_files:
+        songs_list += (Song(path))
+
+    return songs_list
+
+def get_youtube_song(url, keep):
+
+    dir = _construct_path(keep)
     ydl_opts = {
+
         "format":"bestaudio/best",
         'postprocessors': [{
-            'key': 'FFmpegExtractAudio', # Tell FFmpeg to extract the audio
-            'preferredcodec': 'mp3',     # Convert it to WAV for clean librosa parsing
-            'preferredquality': '192',   # Standard high-quality bit rate
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3', 
+            'preferredquality': '192',
         }],
-        # Save the file with the video title as the filename inside our directory
-        'outtmpl': '%(title)s.%(ext)s', 
+        'paths': {"home": dir},
+        'outtmpl': "%(title)s.%(ext)s", 
         'quiet': True,
     }
+
+    song_list = []
+
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info = ydl.extract_info(url, download=True)
-        print(info)
-        filename = ydl.prepare_filename(info)
-        print(filename)
+        filename = info.get('requested_downloads', [{}])[0].get('filepath')
+        
+        if not filename:
+            filename = ydl.prepare_filename(info)
+            if not filename.endswith('.mp3'):
+                filename = filename.rsplit('.', 1)[0] + '.mp3'
+
+        song_list += (Song(filename))
+        
+    return song_list
+
+        
