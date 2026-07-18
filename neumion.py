@@ -1,11 +1,11 @@
 import librosa
 import numpy as np
-import os
 
-import lib.output as out
-from lib.song import Song
 import lib.argumentParser as ap
 import lib.audioFetcher as af
+import lib.dir as d
+import lib.output as out
+from lib.song import Song
 
 class Neumion:
     def __init__(self, args):
@@ -70,3 +70,5 @@ if __name__ == "__main__":
         main()
     except Exception as e:
         out.error(e)
+    finally:
+        d.clean()
