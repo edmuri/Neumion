@@ -1,6 +1,7 @@
 from spotdl import Spotdl
 import yt_dlp
 from song import Song
+import output as out
 
 def _construct_path(keep):
     if keep:
@@ -10,6 +11,7 @@ def _construct_path(keep):
 
 def get_spotify_song(url, keep):
 
+    out.spotify()
     dir = _construct_path(keep)
 
     spotdl_client = Spotdl(
@@ -28,10 +30,12 @@ def get_spotify_song(url, keep):
     for song, path in downloaded_files:
         songs_list += (Song(path))
 
+    out.spotify_complete()
     return songs_list
 
 def get_youtube_song(url, keep):
 
+    out.youtube()
     dir = _construct_path(keep)
     ydl_opts = {
 
@@ -58,7 +62,7 @@ def get_youtube_song(url, keep):
                 filename = filename.rsplit('.', 1)[0] + '.mp3'
 
         song_list += (Song(filename))
-        
+    out.youtube_complete()
     return song_list
 
         
