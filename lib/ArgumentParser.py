@@ -33,3 +33,11 @@ class ArgParser(argparse.ArgumentParser):
                         "--youtube",
                         dest="youtube_link",
                         help="specify Youtube Link ((playlist/song) to analyze)")
+        
+        self.add_argument(
+                        "-k",
+                        "--keep",
+                        dest="keep",
+                        default=False,
+                        action="store_true",
+                        help="Keep any downloaded music after analysis")

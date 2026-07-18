@@ -13,9 +13,9 @@ class Neumion:
 
     def handle_args(self):
         if self.args.spotify_link:
-            af.get_spotify_song(self.args.spotify_link)
+            af.get_spotify_song(self.args.spotify_link, self.args.keep)
         elif self.args.youtube_link:
-            af.get_youtube_song(self.args.youtube_link)
+            af.get_youtube_song(self.args.youtube_link, self.args.keep)
 
     def construct_paths(self):
         base = "Music/"
