@@ -21,6 +21,11 @@ def youtube():
 def youtube_complete():
     print("[-] Fetching songs from Youtube completed")
 
+def analysis():
+    print("[-] Beginning song analysis..")
+    print("[-] This may take a while to be thorough...")
+    print("[-] Please hold")
+
 def error(e):
     print("[!] Error Caught: " + str(e))
     print("[!] Exiting Neumion...")

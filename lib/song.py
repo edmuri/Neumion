@@ -12,8 +12,8 @@ class Song:
     def update_stats(self, tempo=None):
         self.tempo = tempo[0]
 
-    def get_song_duo(self):
-        return (self.title, self.path)
+    def get_song_path(self):
+        return self.path
     
     def __str__(self):
         formatted = "Name: {0}\nTempo: {1:.2f} BPM\n".format(

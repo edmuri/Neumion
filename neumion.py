@@ -31,29 +31,22 @@ class Neumion:
 
         match(bool(self.args.folder), bool(self.args.song)):
             case(False, False):
-                # No Folder, No Song
                 raise Exception("Nothing to analyze, returning..")
-                pass
-
             case(False, True):
-                # No Folder, Yes Song
-                self.songs+= [Song(self.args.song)]
+                self.songs+= [Song(base+self.args.song)]
                 pass
-
             case(True, False):
-                #Yes Folder, No Song
                 for song_path in librosa.util.find_files(base+self.args.folder):
                     self.songs+=[Song(song_path)]
                 pass
-            
             case(True,True):
-                # Yes Folder, Yes Song
                 self.songs+= [Song(base+self.args.folder+"/"+self.args.song)]
                 pass
 
     def analyze(self):
+        out.analysis()
         for song in self.songs:
-            title,path = song.get_song_duo()
+            path = song.get_song_path()
             wave, sample_rate = librosa.load(path)
             tempo, beat_frames = librosa.beat.beat_track(y=wave,sr=sample_rate)
             song.update_stats(tempo)
@@ -70,8 +63,8 @@ def main():
 
     neumion_app = Neumion(args)
     neumion_app.handle_args()
-    # neumion_app.analyze()
-    # neumion_app.print()
+    neumion_app.analyze()
+    neumion_app.print()
 
 if __name__ == "__main__":
     try:

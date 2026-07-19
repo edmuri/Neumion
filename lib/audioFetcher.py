@@ -1,7 +1,7 @@
 from spotdl import Spotdl
 import yt_dlp
-from song import Song
-import output as out
+from lib.song import Song
+import lib.output as out
 
 def _construct_path(keep):
     if keep:
