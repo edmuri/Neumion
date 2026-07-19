@@ -1,6 +1,3 @@
-import librosa
-import numpy as np
-
 import lib.argumentParser as ap
 import lib.audioFetcher as af
 import lib.dir as d
@@ -10,6 +7,9 @@ from lib.song import Song
 class Neumion:
     def __init__(self, args):
         self.args = args
+        self.songs = []
+
+        self.handle_args()
 
     def handle_args(self):
         if self.args.spotify_link:
@@ -27,29 +27,28 @@ class Neumion:
 
     def _construct_paths(self):
         base = "music/"
-        self.songs = []
 
         match(bool(self.args.folder), bool(self.args.song)):
             case(False, False):
                 raise Exception("Nothing to analyze, returning..")
-            case(False, True):
-                self.songs+= [Song(base+self.args.song)]
-                pass
             case(True, False):
-                for song_path in librosa.util.find_files(base+self.args.folder):
+                for path in d.get_files(base+self.args.folder):
+                    song_path = base + path
                     self.songs+=[Song(song_path)]
-                pass
+                return
             case(True,True):
-                self.songs+= [Song(base+self.args.folder+"/"+self.args.song)]
+                song_path = base+self.args.folder+"/"+self.args.songs
                 pass
+            case(False, True):
+                song_path = base+self.args.song
+                pass
+        
+        self.songs+= [Song(song_path)]
 
     def analyze(self):
         out.analysis()
         for song in self.songs:
-            path = song.get_song_path()
-            wave, sample_rate = librosa.load(path)
-            tempo, beat_frames = librosa.beat.beat_track(y=wave,sr=sample_rate)
-            song.update_stats(tempo)
+            song.analyze()
 
     def print(self):
         for song in self.songs:
@@ -62,7 +61,6 @@ def main():
     args = parser.parse_args()
 
     neumion_app = Neumion(args)
-    neumion_app.handle_args()
     neumion_app.analyze()
     neumion_app.print()
 
