@@ -1,3 +1,6 @@
 librosa>=0.11.0
 spotdl>=4.5.0
 yt_dlp>=2025.1.15
+pandas>=3.0
+numpy>=2.3.3
+matplotlib>=3.5.3
