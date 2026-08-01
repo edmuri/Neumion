@@ -1,8 +1,10 @@
-import lib.argumentParser as ap
-import lib.audioFetcher as af
+import lib.arg_parse as ap
+import lib.audio_fetcher as af
 import lib.dir as d
 import lib.output as out
 from lib.song import Song
+
+import os
 
 class Neumion:
     def __init__(self, args):
@@ -13,12 +15,12 @@ class Neumion:
 
     def handle_args(self):
         if self.args.spotify_link:
-            self.song = af.get_spotify_song(
+            self.songs = af.get_spotify_song(
                                 self.args.spotify_link, 
                                 self.args.keep)
             
         elif self.args.youtube_link:
-            self.song = af.get_youtube_song(
+            self.songs = af.get_youtube_song(
                                 self.args.youtube_link, 
                                 self.args.keep)
             
@@ -37,10 +39,14 @@ class Neumion:
                     self.songs+=[Song(song_path)]
                 return
             case(True,True):
-                song_path = base+self.args.folder+"/"+self.args.songs
+                song_path = base+self.args.folder+"/"+self.args.song
+                if not os.path.exists(song_path):
+                    raise Exception("Song not available in "+ base+self.args.folder)
                 pass
             case(False, True):
                 song_path = base+self.args.song
+                if not os.path.exists(song_path):
+                    raise Exception("Song not available in "+ base)
                 pass
         
         self.songs+= [Song(song_path)]
@@ -67,7 +73,7 @@ def main():
 if __name__ == "__main__":
     try:
         main()
-    except Exception as e:
-        out.error(e)
+    # except Exception as e:
+    #     out.error(e)
     finally:
         d.clean()
